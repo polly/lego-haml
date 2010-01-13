@@ -1,6 +1,36 @@
 = lego-haml
 
-Description goes here.
+A lego plugin for rendering haml
+
+== Usage
+  From within an action use the haml method
+    
+    haml(template, locals={})
+
+    A template can be one of two things:
+
+      - String: Renders the string and returns html
+      - Symbol: Looks for a <template>.haml file in the path specified by options(:views)
+                and renders the contents of that file
+
+      Example:
+        haml "%h1 My Header" #=> "<h1>My Header</h1>\n"
+        haml :template       #=> Renders <view_path>/template.haml
+
+    Locals:
+    
+      A hash of local variables to pass to the template
+
+      Example:
+         haml "%h1 foo", :foo => "My Header" #=> "<h1>My Header</h1>\n"
+
+  
+  Instance variables are automatically made available to haml views
+  
+    Example:
+      @foo = "My Template"
+      haml "%h1 @foo" #=> "<h1>My Header</h1>\n"
+
 
 == Note on Patches/Pull Requests
  
