@@ -35,13 +35,17 @@ module Lego
     #     haml "%h1 @foo" #=> "<h1>My Header</h1>\n"
     #
     def haml(template, locals={})
-      template = read_template(template) if template.is_a? Symbol
-      ::Haml::Engine.new(template).render(self, locals)
+      ::Haml::Engine.new(extract(template)).render(self, locals)
     end
 
+
     private
-      
-      def read_template(template)
+       
+      def extract(template)
+        template.is_a?(Symbol) ? read(template) : template
+      end
+
+      def read(template)
         File.read("#{options(:views)}/#{template}.haml")
       end
   end
