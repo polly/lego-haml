@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "lego-haml.gemspec",
      "lib/lego/haml.rb",
      "spec/lego-haml_spec.rb",
      "spec/spec.opts",
