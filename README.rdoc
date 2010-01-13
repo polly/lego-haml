@@ -1,6 +1,6 @@
 = lego-haml
 
-A lego plugin for rendering haml
+A lego[http://github.com/stjernstrom/lego-core] plugin for rendering haml
 
 == Usage
   From within an action use the haml method
