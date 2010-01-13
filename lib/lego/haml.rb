@@ -22,8 +22,7 @@ module Lego
     #       haml "%h1 My Header" #=> "<h1>My Header</h1>\n"
     #       haml :template       #=> Renders <view_path>/template.haml
     #
-    #   <locals> is a hash of local variables to pass to 
-    #            the template
+    #   <locals> is a hash of local variables to pass to the template
     #
     #     Example:
     #        haml "%h1 foo", :foo => "My Header" #=> "<h1>My Header</h1>\n"
@@ -37,7 +36,29 @@ module Lego
     def haml(template, locals={})
       ::Haml::Engine.new(extract(template)).render(self, locals)
     end
-
+    
+    #
+    # Method for rendering partials.
+    #
+    #  <partial> - A symbol representing the filename or a string representing the 
+    #              relative path and the full filename.
+    #
+    #    Example:
+    #       %h1 My Template
+    #       = partial :foo # renders <view_path>/_foo.haml
+    #       = partial "views/_foo.haml"
+    #
+    #  <locals> - is a hash of local variables to pass to the template
+    #
+    #    Example:
+    #       %h1 My Template
+    #       = partial :foo, :my_var => "my var" # my_var will be locally available 
+    #                                           # inside the partial template
+    #
+    def partial(partial, locals={})
+      partial = partial.is_a?(String) ? read_from(partial) : read("_#{partial}")
+      ::Haml::Engine.new(partial).render self, locals
+    end
 
     private
        
@@ -46,7 +67,11 @@ module Lego
       end
 
       def read(template)
-        File.read("#{options(:views)}/#{template}.haml")
+        read_from "#{options(:views)}/#{template}.haml"
+      end
+
+      def read_from(file_path)
+        File.read(file_path)
       end
   end
 end

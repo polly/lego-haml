@@ -25,6 +25,14 @@ def app
     get "/file/with/locals" do
       haml :file_with_locals, :foo => "foo"
     end
+
+    get '/partial' do
+      haml :partial
+    end
+
+    get '/partial/with/path' do
+      haml :explicit_partial
+    end
   end
 end
 
@@ -56,5 +64,17 @@ describe "Lego Haml" do
     get '/file/with/locals'
 
     last_response.body.should eql("<h1>foo</h1>\n")
+  end
+
+  it "should render partials" do
+    get '/partial'
+
+    last_response.body.should eql("<h1>Partial</h1>\n<p>content loaded from partial</p>\n")
+  end
+
+  it "should render partials with explicit path" do
+    get '/partial/with/path'
+
+    last_response.body.should eql("<h1>Partial</h1>\n<p>content loaded from partial</p>\n")
   end
 end
