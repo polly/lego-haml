@@ -5,17 +5,13 @@ def app
     set :views => File.join(File.dirname(__FILE__), 'views')
 
     get "/string" do
-      haml "%h1 My Header"
+      haml "spec/views/template.haml"
     end
 
     get "/instance_variables" do
       @foo = "foo"
 
-      haml "%h1= @foo"
-    end
-
-    get "/string/with/locals" do
-      haml "%h1= foo", :foo => "foo"
+      haml :instance_vars
     end
 
     get "/file" do
@@ -37,7 +33,7 @@ def app
 end
 
 describe "Lego Haml" do
-  it "should render a string of haml as html" do
+  it "should render the specified haml file when passed a string" do
     get '/string'
     last_response.body.should eql("<h1>My Header</h1>\n")
   end
@@ -50,12 +46,6 @@ describe "Lego Haml" do
 
   it "should have access to instance variables" do
     get "/instance_variables"
-
-    last_response.body.should eql("<h1>foo</h1>\n")
-  end
-
-  it "should render a string template with locals passed in" do
-    get '/string/with/locals'
 
     last_response.body.should eql("<h1>foo</h1>\n")
   end
